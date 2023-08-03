@@ -6,6 +6,7 @@ type Props = {
 
 const CollectionItem = (props: Props) => {
   const daysLeft = () => props.data.left / props.data.daily;
+
   return (
     <div class="bg-secondary rounded-lg mx-1 my-1.5 p-3 flex">
       <div class="bg-white w-[36px] h-[36px] rounded-2xl mr-3 mt-1" />

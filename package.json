@@ -26,6 +26,7 @@
   "dependencies": {
     "@fontsource/nunito": "^5.0.5",
     "@solidjs/router": "^0.8.2",
-    "solid-js": "^1.7.6"
+    "solid-js": "^1.7.6",
+    "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql#v1"
   }
 }
