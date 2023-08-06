@@ -12,6 +12,7 @@ import '@fontsource/nunito/700.css';
 import App from './App';
 import Reminders from './pages/Reminders';
 import Inventory from './pages/Inventory';
+import InventoryForm from './pages/InventoryForm';
 
 const root = document.getElementById('root');
 
@@ -28,6 +29,7 @@ render(
         <Route path="/" element={<App />}>
           <Route path="/" element={<div>home</div>} />
           <Route path="reminders" element={<Reminders />} />
+          <Route path="inventory/add" element={<InventoryForm />} />
           <Route path="inventory" element={<Inventory />} />
         </Route>
         <Route path="*" element={<Navigate href="/" />} />

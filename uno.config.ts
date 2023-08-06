@@ -17,6 +17,12 @@ export default defineConfig({
       'primary-400': '#c7eafb',
       secondary: 'rgb(230, 247, 255)',
       onSecondary: '#09293C',
+      dark: '#1a1b1e',
+      'primary-300': '#82d8ff',
+      'dark-400': '#414956',
+      'dark-500': '#30353d',
+      'dark-700': '#17191c',
+      'dark-800': '#101316',
     },
   },
 });

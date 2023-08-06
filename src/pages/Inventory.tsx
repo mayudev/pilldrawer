@@ -2,6 +2,8 @@ import { For } from 'solid-js';
 import CollectionItem from '../components/collection/CollectionItem';
 import { PageTitle } from '../components/layout/PageTitle';
 import { InventoryItem } from '../models/InventoryItem';
+import Button from '../components/forms/Button';
+import { A } from '@solidjs/router';
 
 const tempData: InventoryItem[] = [
   { name: 'Estradiol', daily: 4, unit: 'mg', left: 100 },
@@ -9,7 +11,14 @@ const tempData: InventoryItem[] = [
 
 const Inventory = () => (
   <div>
-    <PageTitle>Inventory</PageTitle>
+    <div class="flex items-center justify-between mr-6">
+      <PageTitle>Inventory</PageTitle>
+      <A href="/inventory/add" class="cursor-default">
+        <Button title="Add item" circular>
+          <div class="i-material-symbols-add text-2xl" />
+        </Button>
+      </A>
+    </div>
     <main class="grid grid-cols-2 m-4">
       <For each={tempData}>{item => <CollectionItem data={item} />}</For>
     </main>

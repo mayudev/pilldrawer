@@ -2,7 +2,7 @@ import { AppMenuItem } from './AppMenuItem';
 
 export const AppMenu = () => {
   return (
-    <div class="bg-secondary">
+    <div class="bg-secondary dark:bg-dark-800">
       <AppMenuItem
         title="Reminders"
         icon="i-material-symbols-alarm"
