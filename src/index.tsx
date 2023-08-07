@@ -13,6 +13,7 @@ import App from './App';
 import Reminders from './pages/Reminders';
 import Inventory from './pages/Inventory';
 import InventoryForm from './pages/InventoryForm';
+import { process } from '@tauri-apps/api';
 
 const root = document.getElementById('root');
 
@@ -21,6 +22,12 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
     'Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?'
   );
 }
+
+document.documentElement.addEventListener('keydown', key => {
+  if (key.ctrlKey && key.code === 'KeyQ') {
+    process.exit(0);
+  }
+});
 
 render(
   () => (

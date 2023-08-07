@@ -7,6 +7,9 @@ dependencies:
   '@solidjs/router':
     specifier: ^0.8.2
     version: 0.8.2(solid-js@1.7.6)
+  '@tauri-apps/api':
+    specifier: ^1.4.0
+    version: 1.4.0
   solid-js:
     specifier: ^1.7.6
     version: 1.7.6
