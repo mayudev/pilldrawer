@@ -1,32 +1,33 @@
-import { For, JSX, Show } from 'solid-js';
+import { For, JSX, Show, splitProps } from 'solid-js';
 import FormElementContainer from './FormElementContainer';
 
-type Props = {
-  value: string;
-  onChange(val: string): void;
-
+type Props = JSX.SelectHTMLAttributes<HTMLSelectElement> & {
+  onChange: JSX.ChangeEventHandler<HTMLSelectElement, Event>;
   options: string[];
   optionLabels?: string[];
   label?: string;
 };
 
 const Select = (props: Props) => {
+  const [local, other] = splitProps(props, ['label', 'value', 'options']);
+
   const handleChoice: JSX.ChangeEventHandler<HTMLSelectElement, Event> = ev => {
-    props.onChange(ev.currentTarget.value);
+    props.onChange(ev);
   };
 
   return (
     <FormElementContainer>
-      <Show when={props.label}>
-        <label class="font-600 opacity-80 text-14px">{props.label}</label>
+      <Show when={local.label}>
+        <label class="font-600 opacity-80 text-14px">{local.label}</label>
       </Show>
       <div class="flex items-center relative">
         <select
+          {...other}
           class="appearance-none border-none outline-none bg-transparent font-inherit text-inherit text-16px py-1 pr-8"
           onChange={handleChoice}
         >
-          <For each={props.options}>
-            {val => <option selected={val === props.value}>{val}</option>}
+          <For each={local.options}>
+            {val => <option selected={val === local.value}>{val}</option>}
           </For>
         </select>
         <div class="i-material-symbols-keyboard-arrow-down absolute right-0 ml-4 text-2xl pointer-events-none" />
