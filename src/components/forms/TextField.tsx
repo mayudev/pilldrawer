@@ -15,7 +15,9 @@ const TextField = (props: Props) => {
   return (
     <FormElementContainer class={local.class}>
       <Show when={props.label}>
-        <label class="font-600 opacity-80 text-14px">{props.label}</label>
+        <label class="font-600 opacity-80 text-14px truncate">
+          {props.label}
+        </label>
       </Show>
 
       <input
@@ -30,9 +32,9 @@ const TextField = (props: Props) => {
             })}
         class={`
   font-inherit outline-none text-inherit text-lg
-  bg-inherit border-none
+  bg-inherit border-none w-100%
   placeholder:text-slate-4
-  b
+  
   `}
       />
     </FormElementContainer>

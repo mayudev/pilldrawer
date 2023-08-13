@@ -8,16 +8,11 @@ const initialize = (db: Database) =>
       id INTEGER PRIMARY KEY,
       name TEXT NOT NULL,
       kind TEXT NOT NULL,
-      icon TEXT
-    );
-    
-    CREATE TABLE IF NOT EXISTS "package" (
-      id INTEGER PRIMARY KEY,
-      name TEXT,
-      dose_count INT NOT NULL,
+      icon TEXT,
+      count INT NOT NULL,
+      dose_number INT NOT NULL,
       dose REAL NOT NULL,
-      medication_id INTEGER,
-      FOREIGN KEY(medication_id) REFERENCES medication(id) 
+      unit TEXT NOT NULL
     );`
   );
 
@@ -34,4 +29,12 @@ export const connect = async () => {
   }
 };
 
-export const db = await connect();
+let instance: Database | null = null;
+
+export const db = async () => {
+  if (instance) return instance;
+  else {
+    instance = await connect();
+    return instance;
+  }
+};
