@@ -19,6 +19,8 @@ const InventoryForm = () => {
   const [, { Form, Field }] = createForm<InventoryItem>({
     initialValues: {
       id: 0,
+      count: 1,
+      doseNumber: 1,
     },
     validate: zodForm(InventorySchema),
   });
@@ -82,6 +84,7 @@ const InventoryForm = () => {
                 <>
                   <TextField
                     {...props}
+                    value={field.value}
                     error={field.error}
                     type="number"
                     label="Count"
@@ -93,6 +96,7 @@ const InventoryForm = () => {
               {(field, props) => (
                 <TextField
                   {...props}
+                  value={field.value}
                   type="number"
                   class="max-w-120px"
                   label="Number of doses"
@@ -109,6 +113,7 @@ const InventoryForm = () => {
                   {...props}
                   type="number"
                   class="max-w-100px"
+                  value={field.value}
                   error={field.error}
                   label="Dose"
                 />
