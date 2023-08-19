@@ -5,8 +5,8 @@ import TextField from '../components/forms/TextField';
 import { DrugKind, getEnumKeys } from '../models/InventoryItem';
 import Select from '../components/forms/Select';
 import { SectionHeading } from '../components/layout/SectionHeading';
-import { SubmitHandler, createForm } from '@modular-forms/solid';
-import { InventorySchema } from '../models/InventorySchema';
+import { SubmitHandler, createForm, zodForm } from '@modular-forms/solid';
+import { InventoryItem, InventorySchema } from '../models/InventorySchema';
 import { saveInventory } from '../services/inventoryService';
 
 const kinds = getEnumKeys(DrugKind);
@@ -16,41 +16,60 @@ const units = ['mg', 'dose'];
 const InventoryForm = () => {
   const navigate = useNavigate();
 
-  const [form, { Form, Field }] = createForm<InventorySchema>({
-    initialValues: {},
+  const [, { Form, Field }] = createForm<InventoryItem>({
+    initialValues: {
+      id: 0,
+    },
+    validate: zodForm(InventorySchema),
   });
 
-  const navigateBack = () => navigate('/inventory');
-
-  const handleSubmit: SubmitHandler<InventorySchema> = async values => {
+  const handleSubmit: SubmitHandler<InventoryItem> = async values => {
+    console.log('asdf');
     console.dir(values);
-    await saveInventory(values, 0);
-    navigateBack();
+    await saveInventory(values, values.id);
+    navigate('/inventory');
   };
 
   return (
     <Form onSubmit={handleSubmit} shouldDirty={false} keepResponse={true}>
       <div>
         <div class="flex items-center mx-4">
-          <Button circular onClick={navigateBack} title="Return">
+          <button class="display-none" />
+          <Button
+            circular
+            onClick={() => navigate('/inventory')}
+            title="Return"
+          >
             <div class="i-material-symbols-arrow-back text-2xl" />
           </Button>
           <PageTitle>Add new item</PageTitle>
           <span class="flex-1" />
+
           <Button>Save</Button>
         </div>
         <main class="my-2 mx-4 ">
           <SectionHeading>Details</SectionHeading>
           <section class="pb-6">
+            <Field name="id" type="number">
+              {(field, props) => <input {...props} type="hidden" />}
+            </Field>
             <Field name="name">
               {(field, props) => (
-                <TextField label="Name" value={field.value || ''} {...props} />
+                <>
+                  <TextField
+                    label="Name"
+                    value={field.value || ''}
+                    error={field.error}
+                    {...props}
+                  />
+                </>
               )}
             </Field>
             <Field name="kind">
               {(field, props) => (
                 <Select
                   label="Kind"
+                  error={field.error}
                   options={kinds}
                   {...props}
                   value={field.value || 'Pill'}
@@ -59,15 +78,17 @@ const InventoryForm = () => {
             </Field>
           </section>
           <SectionHeading>Package</SectionHeading>
-          <section class="flex items-center">
+          <section class="flex items-baseline">
             <Field name={`count`} type="number">
               {(field, props) => (
-                <TextField
-                  {...props}
-                  type="number"
-                  class="max-w-50px"
-                  label="Count"
-                />
+                <>
+                  <TextField
+                    {...props}
+                    error={field.error}
+                    type="number"
+                    label="Count"
+                  />
+                </>
               )}
             </Field>
             <Field name={`doseNumber`} type="number">
@@ -77,6 +98,7 @@ const InventoryForm = () => {
                   type="number"
                   class="max-w-120px"
                   label="Number of doses"
+                  error={field.error}
                 />
               )}
             </Field>
@@ -89,6 +111,7 @@ const InventoryForm = () => {
                   {...props}
                   type="number"
                   class="max-w-100px"
+                  error={field.error}
                   label="Dose"
                 />
               )}
@@ -98,6 +121,7 @@ const InventoryForm = () => {
                 <Select
                   label="Unit"
                   options={units}
+                  error={field.error}
                   {...props}
                   value={field.value || 'mg'}
                 />

@@ -4,19 +4,25 @@ import FormElementContainer from './FormElementContainer';
 type Props = JSX.SelectHTMLAttributes<HTMLSelectElement> & {
   onChange: JSX.ChangeEventHandler<HTMLSelectElement, Event>;
   options: string[];
+  error?: string;
   optionLabels?: string[];
   label?: string;
 };
 
 const Select = (props: Props) => {
-  const [local, other] = splitProps(props, ['label', 'value', 'options']);
+  const [local, other] = splitProps(props, [
+    'label',
+    'value',
+    'options',
+    'error',
+  ]);
 
   const handleChoice: JSX.ChangeEventHandler<HTMLSelectElement, Event> = ev => {
     props.onChange(ev);
   };
 
   return (
-    <FormElementContainer>
+    <FormElementContainer error={local.error}>
       <Show when={local.label}>
         <label class="font-600 opacity-80 text-14px">{local.label}</label>
       </Show>

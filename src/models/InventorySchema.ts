@@ -1,15 +1,34 @@
 import z from 'zod';
-import { DrugKind } from './InventoryItem';
+import { Errors } from './errors';
 
-export const InventoryFormSchema = z.object({
-  id: z.number().nonnegative().int(),
-  name: z.string(),
-  kind: z.nativeEnum(DrugKind),
-  icon: z.string(),
-  count: z.number().int(),
-  doseNumber: z.number().int().nonnegative(),
-  dose: z.number().nonnegative(),
+export const InventorySchema = z.object({
+  id: z.number().int().nonnegative(),
+  name: z.string().nonempty({
+    message: Errors.notEmpty,
+  }),
+  kind: z.string(),
+  icon: z.string().optional(),
+  count: z
+    .number({
+      description: Errors.mustBeNumber,
+      invalid_type_error: Errors.mustBeNumber,
+    })
+    .int()
+    .nonnegative(),
+  doseNumber: z
+    .number({
+      description: Errors.mustBeNumber,
+      invalid_type_error: Errors.mustBeNumber,
+    })
+    .int()
+    .positive(),
+  dose: z
+    .number({
+      description: Errors.mustBeNumber,
+      invalid_type_error: Errors.mustBeNumber,
+    })
+    .nonnegative(),
   unit: z.string().nonempty(),
 });
 
-export type InventorySchema = z.input<typeof InventoryFormSchema>;
+export type InventoryItem = z.input<typeof InventorySchema>;

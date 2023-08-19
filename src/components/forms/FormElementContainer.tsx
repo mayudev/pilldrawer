@@ -2,6 +2,7 @@ import { ParentProps } from 'solid-js';
 
 type Props = ParentProps & {
   class?: string;
+  error?: string;
 };
 
 const FormElementContainer = (props: Props) => (
@@ -14,6 +15,7 @@ const FormElementContainer = (props: Props) => (
     `}
   >
     {props.children}
+    {props.error && <div class="text-sm font-600 text-red3">{props.error}</div>}
   </div>
 );
 

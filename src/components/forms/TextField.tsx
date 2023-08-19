@@ -1,19 +1,16 @@
-import { JSX, Show, createMemo, splitProps } from 'solid-js';
+import { JSX, Show, splitProps } from 'solid-js';
 import FormElementContainer from './FormElementContainer';
 
 type Props = {
   label?: string;
+  error?: string;
 } & JSX.InputHTMLAttributes<HTMLInputElement>;
 
 const TextField = (props: Props) => {
   const [local, other] = splitProps(props, ['class']);
 
-  const getValue = createMemo<number | undefined>(prevValue =>
-    !Number.isNaN(props.value) ? Number(props.value) : prevValue
-  );
-
   return (
-    <FormElementContainer class={local.class}>
+    <FormElementContainer error={props.error} class={local.class}>
       <Show when={props.label}>
         <label class="font-600 opacity-80 text-14px truncate">
           {props.label}
@@ -21,11 +18,11 @@ const TextField = (props: Props) => {
       </Show>
 
       <input
+        error="asdf"
         {...other}
         {...(props.type === 'number'
           ? {
               type: 'number',
-              value: getValue(),
             }
           : {
               type: 'text',
