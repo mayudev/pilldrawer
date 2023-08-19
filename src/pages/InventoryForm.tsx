@@ -7,7 +7,10 @@ import Select from '../components/forms/Select';
 import { SectionHeading } from '../components/layout/SectionHeading';
 import { SubmitHandler, createForm, zodForm } from '@modular-forms/solid';
 import { InventoryItem, InventorySchema } from '../models/InventorySchema';
-import { saveInventory } from '../services/inventoryService';
+import {
+  deleteInventoryItem,
+  saveInventory,
+} from '../services/inventoryService';
 
 const kinds = getEnumKeys(DrugKind);
 
@@ -30,6 +33,14 @@ const InventoryForm = () => {
   const handleSubmit: SubmitHandler<InventoryItem> = async values => {
     await saveInventory(values, values.id);
     navigate('/inventory');
+  };
+
+  const deleteItem = async (e: Event) => {
+    e.preventDefault();
+    if (state) {
+      await deleteInventoryItem((state as InventoryItem).id);
+      navigate('/inventory');
+    }
   };
 
   return (
@@ -133,6 +144,13 @@ const InventoryForm = () => {
               )}
             </Field>
           </section>
+          {state && (
+            <div class="mt-6">
+              <Button onClick={deleteItem} negative>
+                Delete
+              </Button>
+            </div>
+          )}
         </main>
       </div>
     </Form>

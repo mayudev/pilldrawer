@@ -18,7 +18,7 @@ const Inventory = () => {
           </Button>
         </A>
       </div>
-      <main class="grid grid-cols-2 m-4">
+      <main class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 m-4">
         <For each={items()}>
           {item => (
             <A

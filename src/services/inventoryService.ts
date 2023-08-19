@@ -9,6 +9,12 @@ export const saveInventory = async (values: InventoryItem, itemId: number) => {
   console.log(insertedId);
 };
 
+export const deleteInventoryItem = async (id: number) => {
+  const success = await inventoryDriver.deleteInventoryItem(id);
+  if (!success) throw new Error();
+  else return;
+};
+
 export const getInventory = async () => {
   const items = await inventoryDriver.getInventoryItems();
   return items;

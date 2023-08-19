@@ -35,4 +35,12 @@ export const inventoryDriver = {
       doseNumber: r.dose_number,
     })) as InventoryItem[];
   },
+  deleteInventoryItem: async (id: number) => {
+    const instance = await db();
+    const result = await instance.execute(
+      'DELETE FROM medication WHERE id = $1',
+      [id]
+    );
+    return result.rowsAffected > 0;
+  },
 };
