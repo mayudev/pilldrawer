@@ -16,6 +16,8 @@ export const Button = (props: Props) => {
       bg-secondary text-black 
       dark:bg-dark-500 dark:text-primary-300 
       dark:hover:bg-dark-400 
+      transition
+      dark:active:bg-dark-500
       ${
         local.circular
           ? 'rounded-[50%]! w-48px h-48px flex items-center justify-center'
