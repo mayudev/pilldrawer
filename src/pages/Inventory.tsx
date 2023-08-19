@@ -1,7 +1,6 @@
 import { For, createResource } from 'solid-js';
 import CollectionItem from '../components/collection/CollectionItem';
 import { PageTitle } from '../components/layout/PageTitle';
-import { InventoryItem } from '../models/InventoryItem';
 import Button from '../components/forms/Button';
 import { A } from '@solidjs/router';
 import { getInventory } from '../services/inventoryService';
@@ -22,14 +21,20 @@ const Inventory = () => {
       <main class="grid grid-cols-2 m-4">
         <For each={items()}>
           {item => (
-            <CollectionItem
-              data={{
-                name: item.name,
-                left: item.count * item.doseNumber,
-                unit: item.unit,
-                daily: 1,
-              }}
-            />
+            <A
+              class="text-inherit decoration-none"
+              href={`/inventory/edit/${item.id}`}
+              state={item}
+            >
+              <CollectionItem
+                data={{
+                  name: item.name,
+                  left: item.count * item.doseNumber,
+                  unit: item.unit,
+                  daily: 1,
+                }}
+              />
+            </A>
           )}
         </For>
       </main>

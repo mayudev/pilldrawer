@@ -37,6 +37,7 @@ render(
           <Route path="/" element={<div>home</div>} />
           <Route path="reminders" element={<Reminders />} />
           <Route path="inventory/add" element={<InventoryForm />} />
+          <Route path="inventory/edit/:id" element={<InventoryForm />} />
           <Route path="inventory" element={<Inventory />} />
         </Route>
         <Route path="*" element={<Navigate href="/" />} />

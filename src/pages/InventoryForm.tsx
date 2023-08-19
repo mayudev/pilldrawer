@@ -1,4 +1,4 @@
-import { useNavigate } from '@solidjs/router';
+import { useLocation, useNavigate } from '@solidjs/router';
 import Button from '../components/forms/Button';
 import { PageTitle } from '../components/layout/PageTitle';
 import TextField from '../components/forms/TextField';
@@ -16,8 +16,10 @@ const units = ['mg', 'dose'];
 const InventoryForm = () => {
   const navigate = useNavigate();
 
+  const { state } = useLocation();
+
   const [, { Form, Field }] = createForm<InventoryItem>({
-    initialValues: {
+    initialValues: state ?? {
       id: 0,
       count: 1,
       doseNumber: 1,
@@ -42,7 +44,7 @@ const InventoryForm = () => {
           >
             <div class="i-material-symbols-arrow-back text-2xl" />
           </Button>
-          <PageTitle>Add new item</PageTitle>
+          <PageTitle>{state ? 'Edit item' : 'Add new item'}</PageTitle>
           <span class="flex-1" />
 
           <Button>Save</Button>
