@@ -1,8 +1,8 @@
-import { InventorySchema } from '../../models/InventorySchema';
+import { InventoryItem } from '../../models/InventorySchema';
 import { db } from '../db';
 
 export const inventoryDriver = {
-  addInventoryItem: async (item: Omit<InventorySchema, 'packages'>) => {
+  addInventoryItem: async (item: InventoryItem) => {
     const instance = await db();
     const result = await instance.execute(
       `INSERT into medication 
@@ -23,5 +23,16 @@ export const inventoryDriver = {
     );
 
     return result.lastInsertId;
+  },
+  getInventoryItems: async () => {
+    const instance = await db();
+    const result = (await instance.select(
+      'SELECT id, name, kind, icon, count, dose_number, dose, unit FROM medication;'
+    )) as Record<string, unknown>[];
+
+    return result.map(r => ({
+      ...r,
+      doseNumber: r.dose_number,
+    })) as InventoryItem[];
   },
 };

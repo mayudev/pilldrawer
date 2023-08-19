@@ -24,8 +24,6 @@ const InventoryForm = () => {
   });
 
   const handleSubmit: SubmitHandler<InventoryItem> = async values => {
-    console.log('asdf');
-    console.dir(values);
     await saveInventory(values, values.id);
     navigate('/inventory');
   };
