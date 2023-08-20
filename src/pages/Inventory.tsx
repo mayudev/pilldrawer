@@ -18,6 +18,9 @@ const Inventory = () => {
           </Button>
         </A>
       </div>
+      {items()?.length === 0 && (
+        <div class="text-center text-xl font-600">No items found.</div>
+      )}
       <main class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 m-4">
         <For each={items()}>
           {item => (
