@@ -14,6 +14,7 @@ import Reminders from './pages/Reminders';
 import Inventory from './pages/Inventory';
 import InventoryForm from './pages/InventoryForm';
 import { process } from '@tauri-apps/api';
+import ReminderForm from './pages/ReminderForm';
 
 const root = document.getElementById('root');
 
@@ -36,6 +37,7 @@ render(
         <Route path="/" element={<App />}>
           <Route path="/" element={<div>home</div>} />
           <Route path="reminders" element={<Reminders />} />
+          <Route path="reminders/add" element={<ReminderForm />} />
           <Route path="inventory/add" element={<InventoryForm />} />
           <Route path="inventory/edit/:id" element={<InventoryForm />} />
           <Route path="inventory" element={<Inventory />} />

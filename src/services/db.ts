@@ -13,7 +13,18 @@ const initialize = (db: Database) =>
       dose_number INT NOT NULL,
       dose REAL NOT NULL,
       unit TEXT NOT NULL
-    );`
+    );
+    
+    CREATE TABLE IF NOT EXISTS "reminder" (
+      id INTEGER PRIMARY KEY,
+      medication_id INTEGER NOT NULL,
+      frequency INTEGER NOT NULL,
+      weekdays TINYINT,
+      hour INTEGER NOT NULL,
+      minute INTEGER NOT NULL,
+      
+      FOREIGN KEY(medication_id) REFERENCES medication(id) 
+    )`
   );
 
 export const connect = async () => {

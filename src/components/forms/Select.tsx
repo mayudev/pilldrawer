@@ -3,7 +3,8 @@ import FormElementContainer from './FormElementContainer';
 
 type Props = JSX.SelectHTMLAttributes<HTMLSelectElement> & {
   onChange: JSX.ChangeEventHandler<HTMLSelectElement, Event>;
-  options: string[];
+  options: string[] | number[];
+  displayOptions?: string[];
   error?: string;
   optionLabels?: string[];
   label?: string;
@@ -13,6 +14,7 @@ const Select = (props: Props) => {
   const [local, other] = splitProps(props, [
     'label',
     'value',
+    'displayOptions',
     'options',
     'error',
   ]);
@@ -33,7 +35,11 @@ const Select = (props: Props) => {
           onChange={handleChoice}
         >
           <For each={local.options}>
-            {val => <option selected={val === local.value}>{val}</option>}
+            {(val, i) => (
+              <option value={val} selected={val === local.value}>
+                {local.displayOptions ? local.displayOptions[i()] : val}
+              </option>
+            )}
           </For>
         </select>
         <div class="i-material-symbols-keyboard-arrow-down absolute right-0 ml-4 text-2xl pointer-events-none" />
