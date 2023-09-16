@@ -7,6 +7,8 @@ type Props<T> = {
   schema?: AnyZodObject;
 };
 
+export const hasNoKeys = (obj: object) => Object.keys(obj).length === 0;
+
 export const useForm = <T extends object>(props: Props<T>) => {
   const [form, setForm] = createStore(props.initialValues);
   const [errors, setErrors] = createSignal<Partial<Record<keyof T, string>>>(
@@ -37,6 +39,7 @@ export const useForm = <T extends object>(props: Props<T>) => {
       try {
         props.schema.parse(form);
         setErrors({});
+        return {};
       } catch (e: unknown) {
         if (e instanceof ZodError) {
           const errs = e.errors.reduce<Record<string, string>>((acc, curr) => {
@@ -44,6 +47,7 @@ export const useForm = <T extends object>(props: Props<T>) => {
             return acc;
           }, {});
           setErrors(errs as object);
+          return errs;
         }
       }
     }

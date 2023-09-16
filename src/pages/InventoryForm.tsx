@@ -5,12 +5,12 @@ import TextField from '../components/forms/TextField';
 import { DrugKind, getEnumKeys } from '../models/InventoryItem';
 import Select from '../components/forms/Select';
 import { SectionHeading } from '../components/layout/SectionHeading';
-import { SubmitHandler, createForm, zodForm } from '@modular-forms/solid';
 import { InventoryItem, InventorySchema } from '../models/InventorySchema';
 import {
   deleteInventoryItem,
   saveInventory,
 } from '../services/inventoryService';
+import { hasNoKeys, useForm } from '../hooks/useForm';
 
 const kinds = getEnumKeys(DrugKind);
 
@@ -21,18 +21,28 @@ const InventoryForm = () => {
 
   const { state } = useLocation();
 
-  const [, { Form, Field }] = createForm<InventoryItem>({
-    initialValues: state ?? {
+  const { form, fieldArgs, validateForm } = useForm<InventoryItem>({
+    initialValues: (state as InventoryItem) ?? {
       id: 0,
       count: 1,
       doseNumber: 1,
+      dose: 1,
+      kind: 'Pill',
+      name: '',
+      unit: 'mg',
     },
-    validate: zodForm(InventorySchema),
+    schema: InventorySchema,
   });
 
-  const handleSubmit: SubmitHandler<InventoryItem> = async values => {
-    await saveInventory(values, values.id);
-    navigate('/inventory');
+  const handleSubmit = async (e: Event) => {
+    e.preventDefault();
+
+    const errors = validateForm();
+    if (errors && hasNoKeys(errors)) {
+      await saveInventory(form, form.id);
+      navigate('/inventory');
+    }
+    console.dir(errors);
   };
 
   const deleteItem = async (e: Event) => {
@@ -44,7 +54,7 @@ const InventoryForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} shouldDirty={false} keepResponse={true}>
+    <form onSubmit={handleSubmit}>
       <div>
         <div class="flex items-center mx-4">
           <button class="display-none" />
@@ -63,86 +73,44 @@ const InventoryForm = () => {
         <main class="my-2 mx-4 ">
           <SectionHeading>Details</SectionHeading>
           <section class="pb-6">
-            <Field name="id" type="number">
-              {(field, props) => <input {...props} type="hidden" />}
-            </Field>
-            <Field name="name">
-              {(field, props) => (
-                <>
-                  <TextField
-                    label="Name"
-                    value={field.value || ''}
-                    error={field.error}
-                    {...props}
-                  />
-                </>
-              )}
-            </Field>
-            <Field name="kind">
-              {(field, props) => (
-                <Select
-                  label="Kind"
-                  error={field.error}
-                  options={kinds}
-                  {...props}
-                  value={field.value || 'Pill'}
-                />
-              )}
-            </Field>
+            <TextField label="Name" value={form.name} {...fieldArgs('name')} />
+            <Select
+              label="Kind"
+              options={kinds}
+              value={form.kind || 'Pill'}
+              {...fieldArgs('kind')}
+            />
           </section>
           <SectionHeading>Package</SectionHeading>
           <section class="flex items-baseline">
-            <Field name={`count`} type="number">
-              {(field, props) => (
-                <>
-                  <TextField
-                    {...props}
-                    value={field.value}
-                    error={field.error}
-                    type="number"
-                    label="Count"
-                  />
-                </>
-              )}
-            </Field>
-            <Field name={`doseNumber`} type="number">
-              {(field, props) => (
-                <TextField
-                  {...props}
-                  value={field.value}
-                  type="number"
-                  class="max-w-120px"
-                  label="Number of doses"
-                  error={field.error}
-                />
-              )}
-            </Field>
-
+            <TextField
+              value={form.count}
+              type="number"
+              label="Count"
+              {...fieldArgs('count')}
+            />
+            <TextField
+              value={form.doseNumber}
+              type="number"
+              class="max-w-120px"
+              label="Number of doses"
+              {...fieldArgs('doseNumber')}
+            />
             <span class="text-3xl mr-4">x</span>
 
-            <Field name={`dose`} type="number">
-              {(field, props) => (
-                <TextField
-                  {...props}
-                  type="number"
-                  class="max-w-100px"
-                  value={field.value}
-                  error={field.error}
-                  label="Dose"
-                />
-              )}
-            </Field>
-            <Field name={`unit`}>
-              {(field, props) => (
-                <Select
-                  label="Unit"
-                  options={units}
-                  error={field.error}
-                  {...props}
-                  value={field.value || 'mg'}
-                />
-              )}
-            </Field>
+            <TextField
+              type="number"
+              class="max-w-100px"
+              value={form.dose}
+              label="Dose"
+              {...fieldArgs('dose')}
+            />
+            <Select
+              label="Unit"
+              options={units}
+              {...fieldArgs('unit')}
+              value={form.unit || 'mg'}
+            />
           </section>
           {state && (
             <div class="mt-6">
@@ -153,7 +121,7 @@ const InventoryForm = () => {
           )}
         </main>
       </div>
-    </Form>
+    </form>
   );
 };
 

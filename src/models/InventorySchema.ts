@@ -7,7 +7,7 @@ export const InventorySchema = z.object({
     message: Errors.notEmpty,
   }),
   kind: z.string(),
-  icon: z.string().optional(),
+  icon: z.string().nullable(),
   count: z
     .number({
       description: Errors.mustBeNumber,
